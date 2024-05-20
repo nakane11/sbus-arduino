@@ -4,17 +4,18 @@
 /*     --target_angle配列にIDごとの目標角度を格納                */
 /*     --S.BUS_ID 1~6 の動作に対応　                           */
 /************************************************************/
-#include <SoftwareHardware.h>
+#include <BluetoothHardware.h>
 #include <ros.h>
 #include <std_msgs/UInt8MultiArray.h>
 
 #define SBUS_SPEED    100000     //SBUS通信速度（9600 or 100000）
 
-ros::NodeHandle_<SoftwareHardware> nh;
+ros::NodeHandle_<BluetoothHardware> nh;
 void cb(const std_msgs::UInt8MultiArray& sub_msg){
   nh.loginfo("cb"); 
   for(int i=0;i<6;i++){
-    setServoAngle(i, sub_msg.data[i]);
+    //setServoAngle(i, sub_msg.data[i]);
+    setServoAngle(i, 90);
   }
   sendSbusData();
 }
