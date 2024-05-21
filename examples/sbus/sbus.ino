@@ -7,6 +7,7 @@
 #define SBUS_SPEED    100000     //SBUS通信速度（9600 or 100000）
 #define Peri1         1000       //動作周期設定
 
+bool invert = false;
 char sbus_data[25] = {
   0x0f, 0x00, 0x00, 0x00, 0x00,
   0x00, 0x00, 0x00, 0x00, 0x00,
@@ -17,7 +18,11 @@ char sbus_data[25] = {
 short  sbus_servo_id[16];                            //送信用指令角度格納配列（SBUS用変換後）
 
 void setup() {
-  Serial.begin(SBUS_SPEED, SERIAL_8E2); // 100kbps 1データ8bit　パリティEven StopBit:2bit
+  if (invert){ //for esp32
+    Serial.begin(SBUS_SPEED, SERIAL_8E2,3,1,true); // 100kbps 1データ8bit　パリティEven StopBit:2bit
+  }else{ //for arduino
+    Serial.begin(SBUS_SPEED, SERIAL_8E2);
+  }
 }
 
 void loop() { 

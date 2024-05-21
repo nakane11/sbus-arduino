@@ -10,6 +10,8 @@
 
 #define SBUS_SPEED    100000     //SBUS通信速度（9600 or 100000）
 
+bool invert = true;
+
 ros::NodeHandle_<BluetoothHardware> nh;
 void cb(const std_msgs::Float32MultiArray& sub_msg){
   nh.loginfo("cb");
@@ -31,7 +33,12 @@ char sbus_data[25] = {
 short  sbus_servo_id[16];                            //送信用指令角度格納配列（SBUS用変換後）
 
 void setup() {
-  Serial.begin(SBUS_SPEED, SERIAL_8E2); // 100kbps 1データ8bit　パリティEven StopBit:2bit
+  if (invert){ //for esp32
+    Serial.begin(SBUS_SPEED, SERIAL_8E2,3,1,true); // 100kbps 1データ8bit　パリティEven StopBit:2bit
+  }else{ //for arduino
+    Serial.begin(SBUS_SPEED, SERIAL_8E2);
+  }
+
   nh.initNode();
   nh.subscribe(sub);
   delay(10);
