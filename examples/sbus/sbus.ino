@@ -4,6 +4,8 @@
 /*     --target_angle配列にIDごとの目標角度を格納                */
 /*     --S.BUS_ID 1~6 の動作に対応　                           */
 /************************************************************/
+// https://kirikoshokunin.hatenablog.com/entry/2021/03/13/235128
+
 #define SBUS_SPEED    100000     //SBUS通信速度（9600 or 100000）
 #define Peri1         1000       //動作周期設定
 
@@ -82,5 +84,6 @@ void sendSbusData(void){
 
 void setServoAngle(int id, float angle) {
   if (id < 0 || id >= 16) return; // IDが範囲外の場合は何もしない
-  sbus_servo_id[id] = (int)(  10.667 * (double)(angle + 90.0) + 64);
+  //sbus_servo_id[id] = (int)(  10.667 * (double)(angle + 90.0) + 64);
+  sbus_servo_id[id] = (int)(3071.5+1023.5/60*angle); //試験的に決めた値．±60度のサーボで2048~4095の範囲にすると動いた
 }
